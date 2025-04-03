@@ -1,0 +1,18 @@
+services:
+  server:
+    build:
+      context: ./../
+      dockerfile: ./.devcontainer/Dockerfile
+    ports:
+      - "8000:8000"
+    tty: true 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db 
+
+volumes:
+  mongodb_data:
