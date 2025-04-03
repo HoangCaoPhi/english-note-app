@@ -1,0 +1,28 @@
+{
+    "_id": "652b1a8f5a12345678901234",
+    "word": "run",
+    "language": "English",
+    "pronunciations": [
+        { "ipa": "/rʌn/", "region": "US" },
+        { "ipa": "/rʌn/", "region": "UK" }
+    ],
+    "meanings": [
+        {
+            "part_of_speech": "verb",
+            "definition": "To move quickly on foot.",
+            "examples": [
+                "I run every morning.",
+                "She runs faster than me."
+            ]
+        },
+        {
+            "part_of_speech": "noun",
+            "definition": "A race or competition of running.",
+            "examples": [
+                "He won the 100-meter run."
+            ]
+        }
+    ],
+    "synonyms": ["sprint", "jog"],
+    "antonyms": ["walk", "stop"]
+}
