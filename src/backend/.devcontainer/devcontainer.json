@@ -1,0 +1,20 @@
+{
+	"name": "Go with MongoDb",
+	"dockerComposeFile": "compose.yaml",
+	"service": "server",
+	"workspaceFolder": "/workspace", 
+	"postCreateCommand": "go mod tidy",	
+	"forwardPorts": [
+		8000,
+		27017,
+		3000
+	], 
+	"remoteEnv": { 
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [ 
+			]
+		}
+	}
+}
