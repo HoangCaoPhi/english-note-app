@@ -13,10 +13,22 @@ func InitUserRoute(routerGroup *gin.RouterGroup) {
 	InitUserRepositoryRead(userRepositoryReadImpl)
 	InitUserRepositoryWrite(userRepositoryWriteImpl)
 
-	userImpl := NewUserServiceImpl(NewUserRepositoryRead(), NewUserRepositoryWrite())
+	refreshTokenRepositoryReadImpl := NewRefreshTokenRepositoryReadImpl()
+	refreshTokenRepositoryWriteImpl := NewRefreshTokenRepositoryWriteImpl()
+
+	InitRefreshTokenRepositoryRead(refreshTokenRepositoryReadImpl)
+	InitRefreshTokenRepositoryWrite(refreshTokenRepositoryWriteImpl)
+
+	userImpl := NewUserServiceImpl(
+		NewUserRepositoryRead(),
+		NewUserRepositoryWrite(),
+		NewRefreshTokenRepositoryRead(),
+		NewRefreshTokenRepositoryWrite())
+
 	InitUserService(userImpl)
 
 	userController := NewUserController(userService)
 
 	userRouter.POST("/register", userController.Register)
+	userRouter.POST("/login", userController.Login)
 }

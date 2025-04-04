@@ -6,6 +6,8 @@ services:
     ports:
       - "8000:8000"
     tty: true 
+    volumes:
+      - ./../:/workspace    
   mongodb:
     image: mongo:latest
     container_name: mongodb

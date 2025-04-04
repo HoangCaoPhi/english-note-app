@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	ID       bson.Binary `bson:"_id"`
+	ID       bson.Binary `bson:"_id,omitempty"`
 	Username string      `bson:"username" json:"username"`
 	Email    string      `bson:"email" json:"email"`
 	Password string      `bson:"password,omitempty" json:"-"`
@@ -28,8 +28,8 @@ func CreateUser(userName string, email string) *User {
 	}
 }
 
-func (u *User) HashPassword() error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+func (u *User) HashPassword(password string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}

@@ -8,6 +8,7 @@ type UserRepositoryWrite interface {
 
 type UserRepositoryRead interface {
 	GetUserByUserName(userName string) (*User, error)
+	GetByUserId(id bson.Binary) (*User, error)
 	CheckUserExist(userName string) (bool, error)
 }
 

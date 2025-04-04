@@ -43,7 +43,22 @@ func NewUserRepositoryReadImpl() *UserRepositoryReadImpl {
 }
 
 func (u *UserRepositoryReadImpl) GetUserByUserName(userName string) (*User, error) {
-	filter := bson.D{{Key: "Username", Value: userName}}
+	filter := bson.D{{Key: "username", Value: userName}}
+
+	var userResponse *User
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err := u.dbCollection.FindOne(ctx, filter).Decode(&userResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return userResponse, nil
+}
+
+func (u *UserRepositoryReadImpl) GetByUserId(id bson.Binary) (*User, error) {
+	filter := bson.D{{Key: "_id", Value: id}}
 
 	var userResponse *User
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

@@ -31,7 +31,7 @@ func (u *UserController) Register(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	if err := user.HashPassword(); err != nil {
+	if err := user.HashPassword(registerRequest.Password); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not hash password"})
 		return
 	}
@@ -43,4 +43,23 @@ func (u *UserController) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
+}
+
+func (u *UserController) Login(c *gin.Context) {
+	var loginRequest LoginRequest
+	if err := c.BindJSON(&loginRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	access_token, refresh_token, err := u.userService.Login(c, loginRequest.Username, loginRequest.Password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"access_token":  access_token,
+		"refresh_token": refresh_token,
+	})
 }

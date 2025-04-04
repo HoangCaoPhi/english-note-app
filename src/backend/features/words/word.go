@@ -3,7 +3,7 @@ package words
 import "go.mongodb.org/mongo-driver/v2/bson"
 
 type Word struct {
-	ID             bson.Binary     `bson:"_id"`
+	ID             bson.Binary     `bson:"_id ,omitempty"`
 	Word           string          `bson:"word"`
 	Language       string          `bson:"language"`
 	Pronunciations []Pronunciation `bson:"pronunciations"`

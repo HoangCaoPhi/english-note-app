@@ -8,7 +8,8 @@ import (
 
 type UserService interface {
 	Register(ctx context.Context, user *User) (bson.Binary, error)
-	Login(ctx context.Context, user *User)
+	Login(ctx context.Context, username, password string) (string, string, error)
+	RefreshAccessToken(ctx context.Context, refreshToken string, userId bson.Binary) (string, error)
 }
 
 var (

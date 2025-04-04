@@ -1,2 +1,5 @@
 mongodb: 
   connection_string: mongodb://mongodb:27017
+authentication:
+  jwt:
+    secret: 6ep3fWr71EBGwt3GLqsFLkIprQAm9HU6 
