@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"hoangcaophi/english-note-app/src/backend/global"
+	"hoangcaophi/english-note-app/src/backend/shared"
 	"log"
 	"math/rand"
 	"time"
@@ -98,7 +99,7 @@ func getUserAgent(ctx context.Context) string {
 
 func generateAccessToken(user *User) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":      user.ID,
+		"sub":      shared.BsonBinaryToString(user.ID),
 		"exp":      time.Now().Add(time.Minute * 15).Unix(),
 		"username": user.Username,
 	}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"hoangcaophi/english-note-app/src/backend/initialization"
+	"hoangcaophi/english-note-app/src/backend/host/initialization"
 
 	"github.com/gin-gonic/gin"
 )

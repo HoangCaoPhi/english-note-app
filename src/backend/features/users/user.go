@@ -1,7 +1,7 @@
 package users
 
 import (
-	"hoangcaophi/english-note-app/src/backend/utils"
+	utils "hoangcaophi/english-note-app/src/backend/shared"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"golang.org/x/crypto/bcrypt"
