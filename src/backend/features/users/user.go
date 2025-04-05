@@ -1,28 +1,20 @@
 package users
 
 import (
-	utils "hoangcaophi/english-note-app/src/backend/shared"
-
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID       bson.Binary `bson:"_id,omitempty"`
-	Username string      `bson:"username" json:"username"`
-	Email    string      `bson:"email" json:"email"`
-	Password string      `bson:"password,omitempty" json:"-"`
+	ID       bson.ObjectID `bson:"_id,omitempty"`
+	Username string        `bson:"username" json:"username"`
+	Email    string        `bson:"email" json:"email"`
+	Password string        `bson:"password,omitempty" json:"-"`
 }
 
 func CreateUser(userName string, email string) *User {
 	return &User{
-		ID: func() bson.Binary {
-			id, err := utils.GenerateRandomBsonBinary()
-			if err != nil {
-				panic(err)
-			}
-			return id
-		}(),
+		ID:       bson.NewObjectID(),
 		Username: userName,
 		Email:    email,
 	}

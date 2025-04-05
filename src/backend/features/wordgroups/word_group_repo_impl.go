@@ -20,7 +20,7 @@ func NewWordGroupRepositoryReadImpl() *WordGroupRepositoryReadImpl {
 	}
 }
 
-func (wordgroup *WordGroupRepositoryReadImpl) GetWordGroupsByUserID(userID bson.Binary) ([]WordGroup, error) {
+func (wordgroup *WordGroupRepositoryReadImpl) GetWordGroupsByUserID(userID bson.ObjectID) ([]WordGroup, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -57,35 +57,35 @@ func NewWordGroupRepositoryWriteImpl() *WordGroupRepositoryWriteImpl {
 	}
 }
 
-func (wordgroup *WordGroupRepositoryWriteImpl) CreateWordGroup(wordGroup *WordGroup) (bson.Binary, error) {
+func (wordgroup *WordGroupRepositoryWriteImpl) CreateWordGroup(wordGroup *WordGroup) (bson.ObjectID, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	id, err := wordgroup.dbCollection.InsertOne(ctx, wordGroup)
 	if err != nil {
-		return bson.Binary{}, err
+		return bson.ObjectID{}, err
 	}
-	return id.InsertedID.(bson.Binary), nil
+	return id.InsertedID.(bson.ObjectID), nil
 }
 
-func (wordgroup *WordGroupRepositoryWriteImpl) UpdateWordGroup(wordGroup WordGroup) (bson.Binary, error) {
+func (wordgroup *WordGroupRepositoryWriteImpl) UpdateWordGroup(wordGroup WordGroup) (bson.ObjectID, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	_, err := wordgroup.dbCollection.UpdateOne(ctx, map[string]any{"_id": wordGroup.ID}, map[string]any{"$set": wordGroup})
 	if err != nil {
-		return bson.Binary{}, err
+		return bson.ObjectID{}, err
 	}
 	return wordGroup.ID, nil
 }
 
-func (wordgroup *WordGroupRepositoryWriteImpl) DeleteWordGroup(id bson.Binary) (bson.Binary, error) {
+func (wordgroup *WordGroupRepositoryWriteImpl) DeleteWordGroup(id bson.ObjectID) (bson.ObjectID, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	_, err := wordgroup.dbCollection.DeleteOne(ctx, map[string]any{"_id": id})
 	if err != nil {
-		return bson.Binary{}, err
+		return bson.ObjectID{}, err
 	}
 	return id, nil
 }

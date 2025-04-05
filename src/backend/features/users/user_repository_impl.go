@@ -19,17 +19,17 @@ func NewUserRepositoryWriteImpl() *UserRepositoryWriteImpl {
 	}
 }
 
-func (u *UserRepositoryWriteImpl) AddUser(user *User) (bson.Binary, error) {
+func (u *UserRepositoryWriteImpl) AddUser(user *User) (bson.ObjectID, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	result, err := u.dbCollection.InsertOne(ctx, user)
 
 	if err != nil {
-		return bson.Binary{}, err
+		return bson.ObjectID{}, err
 	}
 
-	return result.InsertedID.(bson.Binary), nil
+	return result.InsertedID.(bson.ObjectID), nil
 }
 
 type UserRepositoryReadImpl struct {
@@ -57,7 +57,7 @@ func (u *UserRepositoryReadImpl) GetUserByUserName(userName string) (*User, erro
 	return userResponse, nil
 }
 
-func (u *UserRepositoryReadImpl) GetByUserId(id bson.Binary) (*User, error) {
+func (u *UserRepositoryReadImpl) GetByUserId(id bson.ObjectID) (*User, error) {
 	filter := bson.D{{Key: "_id", Value: id}}
 
 	var userResponse *User

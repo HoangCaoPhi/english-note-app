@@ -4,13 +4,13 @@ import "go.mongodb.org/mongo-driver/v2/bson"
 
 type (
 	RefreshTokenRepositoryRead interface {
-		GetRefreshToken(userId bson.Binary) (RefreshToken, error)
+		GetRefreshToken(userId bson.ObjectID) (RefreshToken, error)
 	}
 
 	RefreshTokenRepositoryWrite interface {
 		AddRefreshToken(refreshToken RefreshToken) error
 		UpdateRefreshToken(
-			userId bson.Binary,
+			userId bson.ObjectID,
 			refreshToken string) error
 	}
 )

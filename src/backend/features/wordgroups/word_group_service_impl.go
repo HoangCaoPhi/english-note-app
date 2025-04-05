@@ -21,7 +21,7 @@ func NewWordGroupServiceImpl(
 	}
 }
 func (w *WordGroupServiceImpl) GetWordGroupsByUserId(ctx context.Context) ([]WordGroup, error) {
-	userId := ctx.Value("userId").(bson.Binary)
+	userId := ctx.Value("userId").(bson.ObjectID)
 
 	wordGroups, err := w.WordGroupRepositoryRead.GetWordGroupsByUserID(userId)
 	if err != nil {
@@ -30,13 +30,13 @@ func (w *WordGroupServiceImpl) GetWordGroupsByUserId(ctx context.Context) ([]Wor
 	return wordGroups, nil
 }
 
-func (w *WordGroupServiceImpl) CreateWordGroup(ctx context.Context, createRequest CreateWordGroupRequest) (bson.Binary, error) {
-	userId := ctx.Value("userId").(bson.Binary)
+func (w *WordGroupServiceImpl) CreateWordGroup(ctx context.Context, createRequest CreateWordGroupRequest) (bson.ObjectID, error) {
+	userId := ctx.Value("userId").(bson.ObjectID)
 
 	wordGroup := NewWordGroup(userId, createRequest.Name)
 	id, err := w.WordGroupRepositoryWrite.CreateWordGroup(wordGroup)
 	if err != nil {
-		return bson.Binary{}, err
+		return bson.ObjectID{}, err
 	}
 	return id, nil
 }

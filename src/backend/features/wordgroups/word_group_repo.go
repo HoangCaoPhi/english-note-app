@@ -4,13 +4,13 @@ import "go.mongodb.org/mongo-driver/v2/bson"
 
 type (
 	WordGroupRepositoryRead interface {
-		GetWordGroupsByUserID(userID bson.Binary) ([]WordGroup, error)
+		GetWordGroupsByUserID(userID bson.ObjectID) ([]WordGroup, error)
 	}
 
 	WordGroupRepositoryWrite interface {
-		CreateWordGroup(wordGroup *WordGroup) (bson.Binary, error)
-		UpdateWordGroup(wordGroup WordGroup) (bson.Binary, error)
-		DeleteWordGroup(id bson.Binary) (bson.Binary, error)
+		CreateWordGroup(wordGroup *WordGroup) (bson.ObjectID, error)
+		UpdateWordGroup(wordGroup WordGroup) (bson.ObjectID, error)
+		DeleteWordGroup(id bson.ObjectID) (bson.ObjectID, error)
 	}
 )
 

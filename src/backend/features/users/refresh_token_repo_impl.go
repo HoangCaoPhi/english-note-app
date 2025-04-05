@@ -19,7 +19,7 @@ func NewRefreshTokenRepositoryReadImpl() *RefreshTokenRepositoryReadImpl {
 	}
 }
 
-func (r *RefreshTokenRepositoryReadImpl) GetRefreshToken(userId bson.Binary) (RefreshToken, error) {
+func (r *RefreshTokenRepositoryReadImpl) GetRefreshToken(userId bson.ObjectID) (RefreshToken, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -54,7 +54,7 @@ func (r *RefreshTokenRepositoryWriteImpl) AddRefreshToken(refreshToken RefreshTo
 	return nil
 }
 
-func (r *RefreshTokenRepositoryWriteImpl) DeleteRefreshToken(userId bson.Binary) error {
+func (r *RefreshTokenRepositoryWriteImpl) DeleteRefreshToken(userId bson.ObjectID) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -67,7 +67,7 @@ func (r *RefreshTokenRepositoryWriteImpl) DeleteRefreshToken(userId bson.Binary)
 }
 
 func (r *RefreshTokenRepositoryWriteImpl) UpdateRefreshToken(
-	userId bson.Binary,
+	userId bson.ObjectID,
 	refreshToken string) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

@@ -3,10 +3,10 @@ package middlewares
 import (
 	"errors"
 	"hoangcaophi/english-note-app/src/backend/global"
-	"hoangcaophi/english-note-app/src/backend/shared"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type AuthClaims struct {
@@ -43,7 +43,7 @@ func Authentication() gin.HandlerFunc {
 			return
 		}
 
-		id, _ := shared.StringToBsonBinary(claims.UserId)
+		id, _ := bson.ObjectIDFromHex(claims.UserId)
 		c.Set("userId", id)
 		c.Next()
 	}

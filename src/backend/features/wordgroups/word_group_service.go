@@ -8,7 +8,7 @@ import (
 
 type WordGroupService interface {
 	GetWordGroupsByUserId(ctx context.Context) ([]WordGroup, error)
-	CreateWordGroup(ctx context.Context, createRequest CreateWordGroupRequest) (bson.Binary, error)
+	CreateWordGroup(ctx context.Context, createRequest CreateWordGroupRequest) (bson.ObjectID, error)
 }
 
 var wordGroupService WordGroupService

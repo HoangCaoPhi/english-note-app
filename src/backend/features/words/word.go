@@ -3,9 +3,9 @@ package words
 import "go.mongodb.org/mongo-driver/v2/bson"
 
 type Word struct {
-	ID             bson.Binary     `bson:"_id"`
-	GroupID        bson.Binary     `bson:"groupId"`
-	UserID         bson.Binary     `bson:"userId"`
+	ID             bson.ObjectID   `bson:"_id"`
+	GroupID        bson.ObjectID   `bson:"groupId"`
+	UserID         bson.ObjectID   `bson:"userId"`
 	Word           string          `bson:"word"`
 	Language       string          `bson:"language"`
 	Pronunciations []Pronunciation `bson:"pronunciations"`

@@ -3,12 +3,12 @@ package users
 import "go.mongodb.org/mongo-driver/v2/bson"
 
 type UserRepositoryWrite interface {
-	AddUser(user *User) (id bson.Binary, err error)
+	AddUser(user *User) (id bson.ObjectID, err error)
 }
 
 type UserRepositoryRead interface {
 	GetUserByUserName(userName string) (*User, error)
-	GetByUserId(id bson.Binary) (*User, error)
+	GetByUserId(id bson.ObjectID) (*User, error)
 	CheckUserExist(userName string) (bool, error)
 }
 

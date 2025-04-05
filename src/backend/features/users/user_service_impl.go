@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"hoangcaophi/english-note-app/src/backend/global"
-	"hoangcaophi/english-note-app/src/backend/shared"
 	"log"
 	"math/rand"
 	"time"
@@ -34,21 +33,21 @@ func NewUserServiceImpl(
 	}
 }
 
-func (u *UserServiceImpl) Register(ctx context.Context, user *User) (bson.Binary, error) {
+func (u *UserServiceImpl) Register(ctx context.Context, user *User) (bson.ObjectID, error) {
 	userExist, err := u.userRepositoryRead.CheckUserExist(user.Username)
 	if err != nil {
 		log.Printf("Error when checking if user exists: %v", err)
-		return bson.Binary{}, errors.New("error checking if user exists")
+		return bson.ObjectID{}, errors.New("error checking if user exists")
 	}
 
 	if userExist {
-		return bson.Binary{}, errors.New("username or Email already exists")
+		return bson.ObjectID{}, errors.New("username or Email already exists")
 	}
 
 	userID, err := u.userRepositoryWrite.AddUser(user)
 	if err != nil {
 		log.Printf("Error when adding user: %v", err)
-		return bson.Binary{}, errors.New("error registering user")
+		return bson.ObjectID{}, errors.New("error registering user")
 	}
 
 	return userID, nil
@@ -99,7 +98,7 @@ func getUserAgent(ctx context.Context) string {
 
 func generateAccessToken(user *User) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":      shared.BsonBinaryToString(user.ID),
+		"sub":      user.ID.Hex(),
 		"exp":      time.Now().Add(time.Minute * 15).Unix(),
 		"username": user.Username,
 	}
@@ -128,7 +127,7 @@ func (u *UserServiceImpl) generateRefreshToken(ctx context.Context, user *User) 
 	return token, nil
 }
 
-func (u *UserServiceImpl) saveRefreshToken(ctx context.Context, userID bson.Binary, refreshToken string) error {
+func (u *UserServiceImpl) saveRefreshToken(ctx context.Context, userID bson.ObjectID, refreshToken string) error {
 	expiredAt := time.Now().Add(time.Hour * 24 * 7).Unix()
 
 	ip := getIP(ctx)
@@ -163,7 +162,7 @@ func generateRandomString(n int) string {
 	return string(result)
 }
 
-func (u *UserServiceImpl) RefreshAccessToken(ctx context.Context, refreshToken string, userId bson.Binary) (string, error) {
+func (u *UserServiceImpl) RefreshAccessToken(ctx context.Context, refreshToken string, userId bson.ObjectID) (string, error) {
 	valid, err := u.isRefreshTokenValid(userId, refreshToken, ctx)
 	if err != nil || !valid {
 		return "", errors.New("invalid refresh token")
@@ -207,7 +206,7 @@ func (u *UserServiceImpl) RefreshAccessToken(ctx context.Context, refreshToken s
 }
 
 func (u *UserServiceImpl) updateRefreshToken(
-	userID bson.Binary,
+	userID bson.ObjectID,
 	newRefreshToken string,
 	id string,
 	userAgent string) error {
@@ -221,7 +220,7 @@ func (u *UserServiceImpl) updateRefreshToken(
 	return nil
 }
 
-func (u *UserServiceImpl) isRefreshTokenValid(userId bson.Binary, refreshToken string, ctx context.Context) (bool, error) {
+func (u *UserServiceImpl) isRefreshTokenValid(userId bson.ObjectID, refreshToken string, ctx context.Context) (bool, error) {
 	tokenRecord, err := refreshTokenRepositoryRead.GetRefreshToken(userId)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
