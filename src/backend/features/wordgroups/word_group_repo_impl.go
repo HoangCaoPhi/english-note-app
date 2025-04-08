@@ -11,12 +11,14 @@ import (
 
 // READ REPOSITORY
 type WordGroupRepositoryReadImpl struct {
-	dbCollection *mongo.Collection
+	dbCollection   *mongo.Collection
+	wordCollection *mongo.Collection
 }
 
 func NewWordGroupRepositoryReadImpl() *WordGroupRepositoryReadImpl {
 	return &WordGroupRepositoryReadImpl{
-		dbCollection: global.MongoDbDatabase.Collection("word_groups"),
+		dbCollection:   global.MongoDbDatabase.Collection("word_groups"),
+		wordCollection: global.MongoDbDatabase.Collection("words"),
 	}
 }
 

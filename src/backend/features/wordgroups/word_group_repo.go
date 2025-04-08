@@ -1,6 +1,8 @@
 package wordgroups
 
-import "go.mongodb.org/mongo-driver/v2/bson"
+import (
+	"go.mongodb.org/mongo-driver/v2/bson"
+)
 
 type (
 	WordGroupRepositoryRead interface {

@@ -14,3 +14,26 @@ type Word struct {
 	Antonyms       []string        `bson:"antonyms"`
 	CreatedAt      int64           `bson:"createdAt"`
 }
+
+func CreateWord(
+	groupId bson.ObjectID,
+	userId bson.ObjectID,
+	word string,
+	language string,
+	pronunciations []Pronunciation,
+	meanings []Meaning,
+	synonyms []string,
+	antonyms []string,
+) *Word {
+	return &Word{
+		ID:             bson.NewObjectID(),
+		GroupID:        groupId,
+		UserID:         userId,
+		Word:           word,
+		Language:       language,
+		Pronunciations: pronunciations,
+		Meanings:       meanings,
+		Synonyms:       synonyms,
+		Antonyms:       antonyms,
+	}
+}
