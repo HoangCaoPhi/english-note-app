@@ -1,0 +1,43 @@
+.word-list-container {
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.word-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.word-list-table .ant-table-cell {
+  vertical-align: top;
+}
+
+.word-list-table .example-cell {
+  max-width: 300px;
+  white-space: pre-line;
+}
+
+@media (max-width: 768px) {
+  .word-list-container {
+    padding: 16px;
+  }
+  
+  .word-list-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.ant-table-cell a {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.ant-table-cell a:hover {
+  text-decoration: underline;
+}
+

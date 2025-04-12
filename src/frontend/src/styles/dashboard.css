@@ -1,0 +1,117 @@
+.dashboard-container {
+  padding: 24px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+}
+
+.stats-section {
+  margin-bottom: 32px;
+}
+
+.stats-section .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stats-section .ant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.word-groups-section {
+  margin-top: 32px;
+}
+
+.group-card {
+  height: 100%;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.group-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.group-card-content {
+  text-align: center;
+}
+
+.group-icon {
+  font-size: 32px;
+  color: #1890ff;
+  margin-bottom: 16px;
+}
+
+.group-card h4 {
+  margin: 16px 0;
+  color: #1f1f1f;
+}
+
+.group-card p {
+  color: #666;
+  margin-bottom: 16px;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.group-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #8c8c8c;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.last-studied {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #a0a0a0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .stats-section .ant-col {
+    margin-bottom: 16px;
+  }
+}
+
+/* Animation for cards */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.group-card {
+  animation: fadeIn 0.5s ease-out forwards;
+  }
