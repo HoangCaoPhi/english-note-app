@@ -1,6 +1,8 @@
 package wordgroups
 
 import (
+	"hoangcaophi/english-note-app/src/backend/pkg/response"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,25 +19,25 @@ func NewWordGroupController(wordGroupService WordGroupService) *WordGroupControl
 func (w *WordGroupController) GetWordGroupsByUserId(ctx *gin.Context) {
 	wordGroups, err := w.WordGroupService.GetWordGroupsByUserId(ctx)
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": err.Error()})
+		response.InternalServerError(ctx, err.Error())
 		return
 	}
-	ctx.JSON(200, wordGroups)
+	response.Success(ctx, wordGroups)
 }
 
 func (w *WordGroupController) CreateWordGroup(ctx *gin.Context) {
 	var createWordGroupRequest CreateWordGroupRequest
 
 	if err := ctx.ShouldBindJSON(&createWordGroupRequest); err != nil {
-		ctx.JSON(400, gin.H{"error": "Invalid request payload"})
+		response.BadRequest(ctx, "Invalid request payload")
 		return
 	}
 
 	id, err := w.WordGroupService.CreateWordGroup(ctx, createWordGroupRequest)
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": err.Error()})
+		response.InternalServerError(ctx, err.Error())
 		return
 	}
 
-	ctx.JSON(201, gin.H{"id": id})
+	response.Created(ctx, gin.H{"id": id})
 }

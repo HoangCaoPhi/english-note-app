@@ -77,7 +77,7 @@ func (u *UserServiceImpl) Login(ctx context.Context, username, password string) 
 		return "", "", err
 	}
 
-	return accessToken, refreshToken, nil
+	return accessToken, refreshToken, nil // Chỉ return tokens, không gửi response
 }
 
 func getIP(ctx context.Context) string {
@@ -99,7 +99,7 @@ func getUserAgent(ctx context.Context) string {
 func generateAccessToken(user *User) (string, error) {
 	claims := jwt.MapClaims{
 		"sub":      user.ID.Hex(),
-		"exp":      time.Now().Add(time.Minute * 15).Unix(),
+		"exp":      time.Now().Add(time.Minute * 1500).Unix(),
 		"username": user.Username,
 	}
 

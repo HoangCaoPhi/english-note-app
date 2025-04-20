@@ -3,6 +3,7 @@ package middlewares
 import (
 	"errors"
 	"hoangcaophi/english-note-app/src/backend/global"
+	"hoangcaophi/english-note-app/src/backend/pkg/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -19,7 +20,7 @@ func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
-			c.JSON(401, gin.H{"error": "unauthorized"})
+			response.Unauthorized(c, "unauthorized")
 			c.Abort()
 			return
 		}
@@ -38,7 +39,7 @@ func Authentication() gin.HandlerFunc {
 		})
 
 		if err != nil || !parsedToken.Valid {
-			c.JSON(401, gin.H{"error": "unauthorized"})
+			response.Unauthorized(c, "unauthorized")
 			c.Abort()
 			return
 		}

@@ -1,7 +1,7 @@
 package words
 
 import (
-	"net/http"
+	"hoangcaophi/english-note-app/src/backend/pkg/response"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,29 +22,29 @@ func (w *WordController) CreateWord(ctx *gin.Context) {
 	var createWordRequest CreateWordRequest
 
 	if err := ctx.ShouldBindJSON(&createWordRequest); err != nil {
-		ctx.JSON(400, gin.H{"error": "Invalid request payload"})
+		response.BadRequest(ctx, "Invalid request payload")
 		return
 	}
 
 	id, err := w.WordService.CreateWord(ctx, createWordRequest)
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": err.Error()})
+		response.InternalServerError(ctx, err.Error())
 		return
 	}
 
-	ctx.JSON(201, gin.H{"id": id})
+	response.Created(ctx, gin.H{"id": id})
 }
 
 func (h *WordController) GetWordsByGroupID(c *gin.Context) {
 	groupIDStr := c.Query("groupId")
 	if groupIDStr == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "groupId is required"})
+		response.BadRequest(c, "groupId is required")
 		return
 	}
 
 	groupID, err := bson.ObjectIDFromHex(groupIDStr)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid groupId"})
+		response.BadRequest(c, "invalid groupId")
 		return
 	}
 
@@ -53,16 +53,21 @@ func (h *WordController) GetWordsByGroupID(c *gin.Context) {
 
 	words, total, err := h.WordService.GetWordsByGroupID(c.Request.Context(), groupID, page, limit)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		response.InternalServerError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": words,
-		"pagination": gin.H{
-			"page":  page,
-			"limit": limit,
-			"total": total,
+	wordResponses := make([]WordResponse, len(words))
+	for i, word := range words {
+		wordResponses[i] = word.ToResponse()
+	}
+
+	response.Success(c, WordListResponse{
+		Data: wordResponses,
+		Pagination: PaginationResponse{
+			Page:  page,
+			Limit: limit,
+			Total: int(total),
 		},
 	})
 }

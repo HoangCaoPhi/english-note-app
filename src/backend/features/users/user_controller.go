@@ -2,7 +2,7 @@ package users
 
 import (
 	"context"
-	"net/http"
+	"hoangcaophi/english-note-app/src/backend/pkg/response"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +21,7 @@ func NewUserController(userService UserService) *UserController {
 func (u *UserController) Register(c *gin.Context) {
 	var registerRequest RegisterRequest
 	if err := c.BindJSON(&registerRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		response.BadRequest(c, err.Error())
 		return
 	}
 
@@ -32,34 +32,34 @@ func (u *UserController) Register(c *gin.Context) {
 	defer cancel()
 
 	if err := user.HashPassword(registerRequest.Password); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not hash password"})
+		response.InternalServerError(c, "Could not hash password")
 		return
 	}
 
 	_, err := u.userService.Register(ctx, user)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user"})
+		response.InternalServerError(c, "Could not create user")
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
+	response.Created(c, gin.H{"message": "User registered successfully"})
 }
 
 func (u *UserController) Login(c *gin.Context) {
 	var loginRequest LoginRequest
 	if err := c.BindJSON(&loginRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		response.BadRequest(c, err.Error())
 		return
 	}
 
 	access_token, refresh_token, err := u.userService.Login(c, loginRequest.Username, loginRequest.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not create user"})
+		response.InternalServerError(c, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"access_token":  access_token,
-		"refresh_token": refresh_token,
+	response.Success(c, LoginResponse{
+		AccessToken:  access_token,
+		RefreshToken: refresh_token,
 	})
 }
